@@ -116,25 +116,17 @@
                         <li class="list-divider"></li>
                         <li class="nav-small-cap"><span class="hide-menu">Management</span></li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html" aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span class="hide-menu">Store Information
+                        <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html" aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span class="hide-menu">Resto Information
                                 </span></a>
                         </li>
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('users.index') }}" aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span class="hide-menu">Users</span></a></li>
 
                         <li class="list-divider"></li>
-                        <li class="nav-small-cap"><span class="hide-menu">Configuration</span></li>
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html" aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span class="hide-menu">Currency</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html" aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span class="hide-menu">PPN</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html" aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span class="hide-menu">Units</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html" aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span class="hide-menu">Percentage of profit</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html" aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span class="hide-menu">Category</span></a></li>
-
-                        <li class="list-divider"></li>
                         <li class="nav-small-cap"><span class="hide-menu">Inventory</span></li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span class="hide-menu">Product</span></a>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span class="hide-menu">Food</span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="ui-buttons.html" class="sidebar-link"><span class="hide-menu"> All product
+                                <li class="sidebar-item"><a href="{{ route('food.index') }}" class="sidebar-link"><span class="hide-menu"> All food
                                         </span></a>
                                 </li>
                                 <li class="sidebar-item"><a href="ui-modals.html" class="sidebar-link"><span class="hide-menu">Report</span></a>
@@ -158,8 +150,9 @@
             <!-- End Sidebar scroll-->
         </aside>
         <main class="py-4">
-                @yield('content')
-            </main>
+            @yield('content')
+        </main>
+        @include("layouts.components.modalDestroy")
         <div class="page-wrapper">
 
             <footer class="footer text-center text-muted">

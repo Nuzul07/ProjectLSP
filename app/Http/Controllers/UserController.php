@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\InformasiToko;
+use App\Level;
 use Illuminate\Http\Request;
+use Hash;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -26,7 +29,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admutama.user.create');
+        $level = Level::orderBy("id", "DESC")->get();
+        return view('admutama.user.create', compact('level'));
     }
 
     /**
@@ -44,20 +48,17 @@ class UserController extends Controller
         $n->name = $r->input('name');
         $n->email = $r->input('email');
         $n->alamat = $r->input('alamat');
-        $n->level = $r->input('level');
-        $n->password = $r->bcrypt(input('password'));
+        $n->level_id = $r->input('level_id');
+        $n->password = bcrypt($r->input('password'));
         $n->toko_id = 1;
-
-        $foto = $r->file('foto');
-
-        if(!empty($foto)){
-            $rand = bin2hex(openssl_random_pseudo_bytes(100)).".".$foto->extension();
-            $rand_md5 = md5($rand).".".$foto->extension();
-            $n->foto = $rand_md5;
-
-            $foto->move(public_path('img_upload/pengguna'),$rand_md5);
+        if (Input::hasFile('foto')) {
+            $foto = date("YmdHis")
+                . uniqid()
+                . "."
+                . Input::file('foto')->getClientOriginalName();
+            Input::file('foto')->move(storage_path('images'), $foto);
+            $n->foto = $foto;
         }
-
         $n->save();
 
         return redirect()->route("users.index");
@@ -83,7 +84,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admutama.user.edit', compact('user'));
+        $level = Level::orderBy("id", "DESC")->get();
+        return view('admutama.user.edit', compact('user', 'level'));
     }
 
     /**
@@ -99,20 +101,18 @@ class UserController extends Controller
         $u->name = $r->input('name');
         $u->email = $r->input('email');
         $u->alamat = $r->input('alamat');
-        $u->level = $r->input('level');
+        $u->level_id = $r->input('level_id');
         if(!empty($r->input("password"))){
-            $u->password = $r->bcrypt(input('password'));
+            $u->password = bcrypt($r->input('password'));
         }
         $u->toko_id = 1;
-
-        $foto = $r->file('foto');
-
-        if(!empty($foto)){
-            $rand = bin2hex(openssl_random_pseudo_bytes(100)).".".$foto->extension();
-            $rand_md5 = md5($rand).".".$foto->extension();
-            $u->foto = $rand_md5;
-
-            $foto->move(public_path('img_upload/pengguna'),$rand_md5);
+        if (Input::hasFile('foto')) {
+            $foto = date("YmdHis")
+                . uniqid()
+                . "."
+                . Input::file('foto')->getClientOriginalName();
+            Input::file('foto')->move(storage_path('images'), $foto);
+            $u->foto = $foto;
         }
         $u->save();
 
@@ -136,6 +136,6 @@ class UserController extends Controller
         $user = User::orderBy("id", "DESC")->get();
         $itoko = InformasiToko::first();
 
-        return view("app.users.print", compact('user','itoko'));
+        return view("user.print", compact('user','itoko'));
     }
 }

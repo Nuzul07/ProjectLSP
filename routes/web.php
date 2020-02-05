@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,49 +10,31 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/images/{filename}', function ($filename) {
+    $path = storage_path('images') . '/' . $filename;
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    $response = Response::make($file);
+    $response->header("Content-Type", $type);
+    return $response;
 });
 
+Route::get('/', function () {
+    return redirect()->route('home');
+});
 
 Auth::routes();
 
-Route::group(["middleware" => "auth"], function() {
+Route::group(["middleware" => "auth"], function () {
     Route::get('home', 'HomeController@index')->name('home');
-    Route::get('profile', 'ProfileController@index')->name('profile');
-    Route::put('profile/{id}', 'ProfileController@update')->name('profileUpdate');
 });
 
-Route::group(["middleware" => "AdmUtama"], function(){
-    Route::resource("informasiToko", "InformasiTokoController");
-    Route::resource("users", "UserController");
-});
+Route::resource("users", "UserController");
+Route::resource("food", "FoodController");
+Route::resource("order", "OrderController");
+Route::get('users/destroy/{id}', 'UserController@destroy');
+Route::get('foods/destroy/{id}', 'FoodController@destroy');
 
-Route::group(["middleware" => "AdmGudang"], function(){
-    Route::resource("currencies", "CurrencyController");
-    Route::resource("ppn", "PpnController");
-    Route::resource("units", "UnitController");
-    Route::resource("persentaseKeuntungan", "PersentaseKeuntunganController");
-    Route::resource("bahan", "BahanController");
-    Route::resource("kategoriProduk", "KategoriController");
-    Route::resource("produk", "ProdukController");
-    Route::resource("produkKosong", "ProdukKosongController");
-    Route::get('produkMasuk', 'ProdukMasukController@index');
-});
-
-Route::group(["middleware" => "Kasir"], function(){
-    Route::resource('transaksi', 'CartController');
-    Route::get('transaksiClean', 'CartController@transaksiClean');
-    Route::resource('checkout', 'CheckoutController');
-    Route::resource('invoice', 'InvoiceController');
-});
-
-Route::group(["prefix" => "print"], function(){
+Route::group(["prefix" => "print"], function () {
     Route::get('users', 'UserController@print')->name("printUsers");
-
-    Route::get('kategoriProduk', 'KategoriController@print');
-    Route::get('produkMasuk', 'ProdukMasukController@print');
-    Route::get('produkKosong', 'ProdukKosongController@print');
-
-    Route::get('riwayatTransaksi', 'InvoiceController@print');
 });
