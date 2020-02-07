@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('foto')->nullable();
-            $table->enum("level", ['Admin Utama', 'Admin Gudang', 'Kasir']);
+            $table->bigInteger('level_id')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

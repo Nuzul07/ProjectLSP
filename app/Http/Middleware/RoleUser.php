@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class RoleAdmGudang
+class RoleUser
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,9 @@ class RoleAdmGudang
      */
     public function handle($request, Closure $next)
     {
-        if(\Auth::user()->level == "Admin Gudang" || \Auth::user()->level == "Admin Utama"){
+        if (\Auth::user()->level_id == "5") {
             return $next($request);
-        }
-        else{
+        } else {
             abort(404);
         }
     }

@@ -32,8 +32,12 @@ Route::group(["middleware" => "auth"], function () {
 Route::resource("users", "UserController");
 Route::resource("food", "FoodController");
 Route::resource("order", "OrderController");
-Route::get('users/destroy/{id}', 'UserController@destroy');
-Route::get('foods/destroy/{id}', 'FoodController@destroy');
+Route::resource("orderdetail", "OrderDetailsController");
+Route::resource("transaksi", "TransaksiController");
+Route::get('transaksiClean', 'TransaksiController@transaksiClean')->name('transaksiClean');
+Route::resource('checkout', 'CheckoutController');
+Route::resource('invoice', 'InvoiceController');
+Route::post('updatestatus', 'OrderDetailsController@update');
 
 Route::group(["prefix" => "print"], function () {
     Route::get('users', 'UserController@print')->name("printUsers");

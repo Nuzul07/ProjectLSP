@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\OrderDetails;
+use App\Order;
+use App\Food;
 use Illuminate\Http\Request;
 
 class OrderDetailsController extends Controller
@@ -14,7 +16,8 @@ class OrderDetailsController extends Controller
      */
     public function index()
     {
-        //
+        $dorder = OrderDetails::orderBy("id", "DESC")->get();
+        return view('admutama.detailorder.index',compact('dorder'));
     }
 
     /**
@@ -24,7 +27,9 @@ class OrderDetailsController extends Controller
      */
     public function create()
     {
-        //
+        $order = Order::orderBy("id", "DESC")->get();
+        $food = Food::orderBy("id", "DESC")->get();
+        return view('admutama.detailorder.create', compact('order','food'));
     }
 
     /**
@@ -33,9 +38,15 @@ class OrderDetailsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        //
+        $do = new OrderDetails;
+        $do->order_id = $r->input('order_id');
+        $do->food_id = $r->input('food_id');
+        $do->keterangan = $r->input('keterangan');
+        $do->status = 0;
+        $do->save();
+        return redirect()->route("orderdetail.index")->with("alertStore", $r->input('order_id'));
     }
 
     /**
@@ -44,9 +55,9 @@ class OrderDetailsController extends Controller
      * @param  \App\OrderDetails  $orderDetails
      * @return \Illuminate\Http\Response
      */
-    public function show(OrderDetails $orderDetails)
+    public function show($id)
     {
-        //
+
     }
 
     /**
@@ -55,9 +66,10 @@ class OrderDetailsController extends Controller
      * @param  \App\OrderDetails  $orderDetails
      * @return \Illuminate\Http\Response
      */
-    public function edit(OrderDetails $orderDetails)
+    public function edit($id)
     {
-        //
+        $dorder = Order::find($id);
+        return view('admutama.detailorder.edit', compact('dorder'));
     }
 
     /**
@@ -67,9 +79,15 @@ class OrderDetailsController extends Controller
      * @param  \App\OrderDetails  $orderDetails
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrderDetails $orderDetails)
+    public function update(Request $r)
     {
-        //
+        $do = OrderDetails::find($r->input('id'));
+        $do->order_id = $r->input('order_id');
+        $do->food_id = $r->input('food_id');
+        $do->keterangan = $r->input('keterangan');
+        $do->status = 0;
+        $do->save();
+        return redirect()->route("orderdetail.index")->with("alertUpdate", $r->input('order_id'));
     }
 
     /**
@@ -78,8 +96,10 @@ class OrderDetailsController extends Controller
      * @param  \App\OrderDetails  $orderDetails
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OrderDetails $orderDetails)
+    public function destroy($id)
     {
-        //
+        $dorder = OrderDetails::find($id);
+        $dorder->delete();
+        return redirect()->route("orderdetail.index");
     }
 }

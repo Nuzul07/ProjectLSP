@@ -17,8 +17,8 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label class="text-dark" for="uname">Username</label>
-                                <input class="form-control" id="uname" type="text" name="username" placeholder="Enter your username">
+                                <label class="text-dark" for="uname">Email</label>
+                                <input class="form-control" id="uname" type="email" name="email" placeholder="Enter your username">
                             </div>
                         </div>
                         <div class="col-lg-12">
